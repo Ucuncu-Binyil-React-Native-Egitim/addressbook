@@ -1,5 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { AddressType, initialStateType } from '../../types/address';
+import {
+  AddressType,
+  CreatedAddress,
+  initialStateType,
+} from '../../types/address';
 
 const initialState: initialStateType = {
   addresses: [],
@@ -12,8 +16,11 @@ const AddressSlice = createSlice({
     addAddresses: (state, action: PayloadAction<AddressType[]>) => {
       state.addresses = action.payload;
     },
+    createAddress: (state, action: PayloadAction<AddressType>) => {
+      state.addresses.push(action.payload);
+    },
   },
 });
 
 export default AddressSlice.reducer;
-export const { addAddresses } = AddressSlice.actions;
+export const { addAddresses, createAddress } = AddressSlice.actions;

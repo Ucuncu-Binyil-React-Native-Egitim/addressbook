@@ -1,5 +1,5 @@
 export type CreatedAddress = {
-  addressTitle: String;
+  addressTitle: string;
   district: string;
   city: string;
   addressDetails: string;

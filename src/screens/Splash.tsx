@@ -11,7 +11,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 const Splash = () => {
   const url = 'https://66532d51813d78e6d6d77614.mockapi.io/api/v1/adresses';
   const dispatch = useDispatch();
-  const { navigate } =
+  const { replace } =
     useNavigation<
       StackNavigationProp<RootStackParamList, StackScreens.Splash>
     >();
@@ -25,13 +25,10 @@ const Splash = () => {
         console.log(error);
       } finally {
         setTimeout(() => {
-          navigate(StackScreens.AddressList);
+          replace(StackScreens.AddressList);
         }, 1500);
       }
     };
-
-    // 2. adresleri store'a kaydet
-    // 3. işlemler tamamlandıysa => adresslist ekranına git
 
     fetchAddresses();
   }, []);

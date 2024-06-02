@@ -10,6 +10,8 @@ import { RootState } from '../store';
 import { AddressType } from '../types/address';
 import Location from '../../assets/icons/location';
 import ArrowRight from '../../assets/icons/arrowRight';
+import { Button, ButtonTypes } from '../components/Button';
+import { SafeAreaView } from 'react-native-safe-area-context';
 type RenderItemType = {
   item: {
     index: number;
@@ -34,6 +36,11 @@ const AddressList = () => {
   const RenderItem = ({ item }: RenderItemType) => {
     return (
       <TouchableOpacity
+        onPress={() =>
+          navigate(StackScreens.AddNewAddress, {
+            passedAddress: item.item,
+          })
+        }
         style={{
           padding: inlinePadding,
           borderRadius: 10,
@@ -81,14 +88,22 @@ const AddressList = () => {
   };
 
   return (
-    <View style={{ backgroundColor: 'white', flex: 1 }}>
-      <View style={{ padding }}>
+    <SafeAreaView
+      style={{
+        backgroundColor: 'white',
+        flex: 1,
+        justifyContent: 'space-between',
+      }}
+      edges={['bottom']}
+    >
+      <View style={{ padding, flex: 1 }}>
         <Text fontType='medium16' style={{ marginBottom: 10 }}>
-          My Addresses
+          Kayıtlı Adreslerim
         </Text>
         <FlatList
           data={addresses}
           renderItem={(item) => <RenderItem item={item} />}
+          keyExtractor={(item) => item.id}
           style={{
             borderWidth: 1,
             borderColor: '#e1e2e6',
@@ -106,7 +121,20 @@ const AddressList = () => {
           )}
         />
       </View>
-    </View>
+      <View
+        style={{
+          padding: 20,
+          borderTopWidth: 1,
+          borderColor: '#e1e2e6',
+        }}
+      >
+        <Button
+          title='Yeni Adres Ekle'
+          onPress={() => navigate(StackScreens.AddNewAddress)}
+          type={ButtonTypes.Primary}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 

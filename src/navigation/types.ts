@@ -1,12 +1,14 @@
+import { AddressType } from '../types/address';
+
 enum StackScreens {
-  AddressList = 'Addres Ekranı',
-  AddNewAddress = 'Add New Address',
+  AddressList = 'Addreslerim',
+  AddNewAddress = 'Adres Ekle',
   Splash = 'Splash Screen',
 }
 
 type RootStackParamList = {
   [StackScreens.AddressList]: undefined;
-  [StackScreens.AddNewAddress]: undefined;
+  [StackScreens.AddNewAddress]: { passedAddress: AddressType } | undefined;
   [StackScreens.Splash]: undefined;
 };
 
