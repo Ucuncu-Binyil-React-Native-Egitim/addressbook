@@ -1,4 +1,4 @@
-import { View, Text, TextInput } from 'react-native';
+import { View } from 'react-native';
 import React, { useState } from 'react';
 import { Button, ButtonTypes } from '../components/Button';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -8,7 +8,13 @@ import { AddressType } from '../types/address';
 import Input from '../components/Input';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { createAddress } from '../store/features/addressSlice';
+import {
+  createAddress,
+  deleteAddress,
+  updateAddress,
+} from '../store/features/addressSlice';
+
+const url = 'https://66532d51813d78e6d6d77614.mockapi.io/api/v1/adresses';
 
 const AddNewAddress = () => {
   const { params } =
@@ -23,9 +29,19 @@ const AddNewAddress = () => {
     id: params?.passedAddress.id ?? '',
   });
 
+  const update = async () => {
+    try {
+      const res = await axios.put(url + `/${state.id}`, state);
+      dispatch(updateAddress(res.data));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      goBack();
+    }
+  };
+
   const saveAddress = async () => {
     try {
-      const url = 'https://66532d51813d78e6d6d77614.mockapi.io/api/v1/adresses';
       const res = await axios.post(url, state);
       dispatch(createAddress(res.data));
     } catch (error) {
@@ -35,16 +51,40 @@ const AddNewAddress = () => {
     }
   };
 
+  const removeAddress = async () => {
+    try {
+      await axios.delete(url + `/${state.id}`);
+      dispatch(deleteAddress(state.id));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      goBack();
+    }
+  };
+
   const isDisable = () => {
-    if (
-      !state.addressDetails ||
-      !state.addressTitle ||
-      !state.city ||
-      !state.district
-    ) {
-      return true;
+    if (params?.passedAddress) {
+      if (
+        params.passedAddress.addressTitle === state.addressTitle &&
+        params.passedAddress.addressDetails === state.addressDetails &&
+        params.passedAddress.city === state.city &&
+        params.passedAddress.district === state.district
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
-      return false;
+      if (
+        !state.addressDetails ||
+        !state.addressTitle ||
+        !state.city ||
+        !state.district
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     }
   };
 
@@ -80,9 +120,16 @@ const AddNewAddress = () => {
         />
       </View>
       <View style={{ padding: 20, borderTopWidth: 1, borderColor: '#e1e2e6' }}>
+        {params?.passedAddress && (
+          <Button
+            style={{ backgroundColor: 'red', marginBottom: 10 }}
+            onPress={removeAddress}
+            title='Sil'
+          />
+        )}
         <Button
           title={params?.passedAddress ? 'Güncelle' : 'Kaydet'}
-          onPress={saveAddress}
+          onPress={params?.passedAddress ? update : saveAddress}
           disabled={isDisable()}
           type={ButtonTypes.Primary}
         />

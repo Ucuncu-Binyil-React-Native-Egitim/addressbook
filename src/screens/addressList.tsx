@@ -12,6 +12,7 @@ import Location from '../../assets/icons/location';
 import ArrowRight from '../../assets/icons/arrowRight';
 import { Button, ButtonTypes } from '../components/Button';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 type RenderItemType = {
   item: {
     index: number;

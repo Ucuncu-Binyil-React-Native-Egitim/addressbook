@@ -4,6 +4,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   TouchableOpacityProps,
+  ViewStyle,
 } from 'react-native';
 import Text from './Text';
 export enum ButtonTypes {
@@ -14,7 +15,7 @@ export enum ButtonTypes {
 interface ButtonProps extends TouchableOpacityProps {
   title: string;
   type: ButtonTypes;
-  style?: any;
+  style?: ViewStyle;
   disabled?: boolean;
   loading?: boolean;
 }
